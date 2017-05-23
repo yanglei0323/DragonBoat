@@ -9,6 +9,32 @@ $('#stage').attr('width',viewWidth);
 $('#stage').attr('height',viewHeight);
 $('#gamepanel').css('width',viewWidth);
 $('#gamepanel').css('height',viewHeight);
+// 音乐控制
+function audioAutoPlay(id){  
+    var audio = document.getElementById(id),  
+    play = function(){  
+        audio.play();  
+        document.removeEventListener("touchstart",play, false);  
+    };  
+    audio.play();  
+    document.addEventListener("WeixinJSBridgeReady", function () {  
+        play();  
+    }, false);  
+    document.addEventListener('YixinJSBridgeReady', function() {  
+        play();  
+    }, false);  
+    document.addEventListener("touchstart",play, false);  
+}  
+audioAutoPlay('audio');
+$('.music').on('click',function(){
+    $(this).toggleClass('play');
+    var audio = document.getElementById('audio');
+    if (audio.paused) {
+        audio.play();
+    } else {
+        audio.pause();
+    }
+});
 function Ship(ctx){
 	gameMonitor.im.loadImage(['static/img/player.png']);
 	this.width = 80;
@@ -163,6 +189,7 @@ var gameMonitor = {
 	bgSpeed : 10,
 	bgloop : 0,
 	score : 0,
+	user : 0,
 	im : new ImageMonitor(),
 	foodList : [],
 	bgDistance : 0,//背景位置
@@ -182,7 +209,7 @@ var gameMonitor = {
 		bg.onload = function(){
           	ctx.drawImage(bg, 0, 0, _this.bgWidth, _this.bgHeight);          	
 		}
-		bg.src = 'static/img/bg.jpg';
+		bg.src = 'static/img/bg.png';
 
 		_this.initListener(ctx);
 
@@ -217,6 +244,61 @@ var gameMonitor = {
 		});
 
 		body.on(gameMonitor.eventType.start, '.share', function(){
+			$.ajax({
+			     type: "GET",
+			     url: "http://47.92.29.81:8890/user/unl/wzinfo.json",
+			     data: {'url':window.location.href.split('#')[0]},
+			     dataType: "json",
+			     success: function(resp){
+			         if (1 === resp.code) {
+			            wx.config({
+			                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			                appId: resp.data.appid, // 必填，公众号的唯一标识
+			                timestamp: resp.data.timestamp, // 必填，生成签名的时间戳
+			                nonceStr: resp.data.noncestr, // 必填，生成签名的随机串
+			                signature: resp.data.signature,// 必填，签名，见附录1
+			                jsApiList: [
+			                    'checkJsApi',
+			                    'onMenuShareAppMessage',
+			                    'onMenuShareTimeline'
+			                ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			            });
+			            wx.ready(function () {
+			            //分享给朋友
+			            wx.onMenuShareAppMessage({
+			                title: "啊哈哈！我"+time+"秒内吃了"+score+"个粽子，打败了全国"+user+"%的人，不服来战！", // 分享标题
+			                desc: "全民“粽”动员，欢天喜地吃粽子！", // 分享描述
+			                link: window.location.href.split('#')[0], // 分享链接
+			                imgUrl: 'http://api.yueyishujia.com/education/www/operate/valentinesday/img/dragonboat.png', // 分享图标
+			                type: 'link', // 分享类型,music、video或link，不填默认为link
+			                dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
+			                success: function () {
+			                // 用户确认分享后执行的回调函数
+			                //$.diyAlert("分享成功！");
+			                },
+			                cancel: function () {
+			                // 用户取消分享后执行的回调函数
+			                //alert("用户取消分享！");
+			                }
+			            });
+			            //分享到朋友圈
+			            wx.onMenuShareTimeline({
+			                title: "啊哈哈！我"+time+"秒内吃了"+score+"个粽子，打败了全国"+user+"%的人，不服来战！", // 分享标题
+			                desc: "全民“粽”动员，欢天喜地吃粽子！", // 分享描述
+			                link: window.location.href.split('#')[0], // 分享链接
+			                imgUrl: 'http://api.yueyishujia.com/education/www/operate/valentinesday/img/dragonboat.png', // 分享图标
+			                success: function () {
+			                // 用户确认分享后执行的回调函数
+			                //$.diyAlert("分享到朋友圈成功！");
+			                },
+			                cancel: function () {
+			                // 用户取消分享后执行的回调函数
+			                }
+			                });
+			            });
+			        }
+			      }
+			});
 			$('.weixin-share').show().on(gameMonitor.eventType.start, function(){
 				$(this).hide();
 			});
@@ -244,10 +326,10 @@ var gameMonitor = {
 		            wx.ready(function () {
 		            //分享给朋友
 		            wx.onMenuShareAppMessage({
-		                title: "端午节活动", // 分享标题
-		                desc: "描述描述", // 分享描述
+		                title: "全民“粽”动员，欢天喜地吃粽子！", // 分享标题
+		                desc: "真的吃货，不会放弃每一颗从天而降的粽子。", // 分享描述
 		                link: window.location.href.split('#')[0], // 分享链接
-		                imgUrl: 'http://api.yueyishujia.com/education/www/operate/valentinesday/img/head.jpg', // 分享图标
+		                imgUrl: 'http://api.yueyishujia.com/education/www/operate/valentinesday/img/dragonboat.png', // 分享图标
 		                type: 'link', // 分享类型,music、video或link，不填默认为link
 		                dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
 		                success: function () {
@@ -261,10 +343,10 @@ var gameMonitor = {
 		            });
 		            //分享到朋友圈
 		            wx.onMenuShareTimeline({
-		                title: "端午节活动", // 分享标题
-		                desc: "描述描述", // 分享描述
+		                title: "全民“粽”动员，欢天喜地吃粽子！", // 分享标题
+		                desc: "真的吃货，不会放弃每一颗从天而降的粽子。", // 分享描述
 		                link: window.location.href.split('#')[0], // 分享链接
-		                imgUrl: 'http://api.yueyishujia.com/education/www/operate/valentinesday/img/head.jpg', // 分享图标
+		                imgUrl: 'http://api.yueyishujia.com/education/www/operate/valentinesday/img/dragonboat.png', // 分享图标
 		                success: function () {
 		                // 用户确认分享后执行的回调函数
 		                //$.diyAlert("分享到朋友圈成功！");
@@ -276,7 +358,7 @@ var gameMonitor = {
 		            });
 		        }
 		      }
-		 });
+		});
 
 	},
 	rollBg : function(ctx){
@@ -324,7 +406,7 @@ var gameMonitor = {
 		
 	},
 	genorateFood : function(){
-		var genRate = 30; //产生月饼的频率
+		var genRate = 25; //产生月饼的频率
 		var random = Math.random();
 		if(random*genRate>genRate-1){
 			var left = Math.random()*(this.w - 50);
@@ -343,39 +425,43 @@ var gameMonitor = {
 		$('#score').text(this.score);
 	},
 	getScore : function(){
-		var time = Math.floor(this.time/60);
-		var score = this.score;
-		var user = 1;
+		time = Math.floor(this.time/60);
+		score = this.score;
+		user = 1;
 		if(score==0){
-			$('#scorecontent').html('真遗憾，您竟然<span class="lighttext">一个</span>月饼都没有抢到！');
+			$('#scorecontent').html('真遗憾<br>您竟然<span class="lighttext">一个</span>粽子都没有吃到');
 			$('.btn1').text('大侠请重新来过').removeClass('share').addClass('playagain');
 			$('#fenghao').removeClass('geili yinhen').addClass('yinhen');
+			$('.replay').addClass('displayno');
+			$('.bottom-icon').attr('src','static/img/yinhen_icon.png');
 			return;
 		}
 		else if(score<10){
-			user = 2;
+			user = Math.floor(0 + Math.random() * (10 - 0));
 		}
 		else if(score>10 && score<=20){
-			user = 10;
+			user = Math.floor(10 + Math.random() * (25 - 10));
 		}
 		else if(score>20 && score<=40){
-			user = 40;
+			user = Math.floor(26 + Math.random() * (45 - 26));
 		}
 		else if(score>40 && score<=60){
-			user = 80;
+			user = Math.floor(46 + Math.random() * (75 - 46));
 		}
 		else if(score>60 && score<=80){
-			user = 92;
+			user = Math.floor(76 + Math.random() * (90 - 76));
 		}
 		else if(score>80){
-			user = 99;
+			user = Math.floor(91 + Math.random() * (100 - 91));
 		}
 		$('#fenghao').removeClass('geili yinhen').addClass('geili');
-		$('#scorecontent').html('您在<span id="stime" class="lighttext">2378</span>秒内抢到了<span id="sscore" class="lighttext">21341</span>个月饼<br>超过了<span id="suser" class="lighttext">31%</span>的用户！');
+		$('#scorecontent').html('您在<span id="stime" class="lighttext">2378</span>秒内吃到了<span id="sscore" class="lighttext">21341</span>个粽子<br>超过了<span id="suser" class="lighttext">31%</span>的用户！');
 		$('#stime').text(time);
 		$('#sscore').text(score);
 		$('#suser').text(user+'%');
-		$('.btn1').text('请小伙伴吃月饼').removeClass('playagain').addClass('share');
+		$('.btn1').text('请小伙伴吃粽子').removeClass('playagain').addClass('share');
+		$('.replay').removeClass('displayno');
+		$('.bottom-icon').attr('src','static/img/geili_icon.png');
 	},
 	isMobile : function(){
 		var sUserAgent= navigator.userAgent.toLowerCase(),

@@ -49,34 +49,24 @@ a{
 .score-wrap {
 	background: url(../img/scorebg.png) no-repeat;
 	background-size: 100%;
-	color: #FFF;
+	color: #ef0d00;
 	/*display: none;*/
 	font-family: "Helvetica","Microsoft YaHei",sans-serif;
 	font-style: italic;
-	font-size: 17px;
+	font-size: 18px;
 	font-weight: 700;
 	height: 32px;
 	letter-spacing: 2px;
 	padding: 7px 10px;
 	position: absolute;
-	right: 20px;
-	text-align: right;
-	text-shadow: 1.5px 0 0 #613209,-1.5px 0 0 #613209,0 1px 0 #613209,0 -1.5px 0 #613209,1px 1px 0 #613209,-1px 1px 0 #613209,1px -1px 0 #613209,-1px -1px 0 #613209;
+	left: 20px;
+	text-align: left;
+	// text-shadow: 1.5px 0 0 #613209,-1.5px 0 0 #613209,0 1px 0 #613209,0 -1.5px 0 #613209,1px 1px 0 #613209,-1px 1px 0 #613209,1px -1px 0 #613209,-1px -1px 0 #613209;
 	top: 10px;
 	width: 105px;
 	z-index: 1005
 }
 
-.score-wrap div {
-	background: url(../img/heart.png) no-repeat;
-	background-size: 100%;
-	height: 26px;
-	left: 2px;
-	position: absolute;
-	top: 2px;
-	width: 26px;
-	z-index: 1009
-}
 
 div.hearthot {
 	-webkit-animation: fire .2s linear;
@@ -121,9 +111,32 @@ div.hearthot {
 		transform: scale(1.0)
 	}
 }
+.music {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 25px;
+    height: 25px;
+    background-image: url('../img/pagemusic1.png');
+    background-size: 25px;
+    z-index: 99;
+}
+.music.play {
+    background-image: url('../img/pagemusic.png');
+    -webkit-animation: rotate 3.45s linear infinite;
+    animation: rotate 3.45s linear infinite;
+}
+@keyframes rotate {
+  0% {transform:rotate(0deg)}
+  100% {transform:rotate(360deg)}
+}
+@-webkit-keyframes rotate {
+  0% {-webkit-transform:rotate(0deg)}
+  100% {-webkit-transform:rotate(360deg)}
+}
 #guidePanel {
-	background: rgba(0,0,0,0.6) url(../img/startbg.png) center 50% no-repeat;
-	background-size: 219px 369px;
+	background: rgba(0,0,0,0.8) url(../img/startbg.png) center 50% no-repeat;
+	background-size: 274px 359px;
 	height: 100%;
 	left: 0;
 	position: absolute;
@@ -132,8 +145,8 @@ div.hearthot {
 	z-index: 10000
 }
 #gameoverPanel {
-	background: rgba(0,0,0,0.8) url(../img/gameover.png) center 30% no-repeat;
-	background-size: 230px 260px;
+	background: rgba(0,0,0,0.8) url(../img/gameover.png) center 40% no-repeat;
+	background-size: 200px 187px;
 	top: 0
 }
 
@@ -146,8 +159,9 @@ div.hearthot {
 }
 
 #resultPanel{
-	background:url(../img/endpage.jpg) center top no-repeat;
+	background:url(../img/endpage.png) center top no-repeat;
 	background-size:100% 100%;
+	overflow:hidden;
 }
 
 #resultPanel,#resultPanel .weixin-share {
@@ -155,8 +169,8 @@ div.hearthot {
 	top: 0
 }
 #resultPanel .weixin-share {
-	background: rgba(0,0,0,.8) url(../img/weixin.png) right top no-repeat;
-	background-size: 212px 196px;
+	background: rgba(0,0,0,.8) url(../img/weixin.png) center 20px no-repeat;
+	background-size: 306px 306px;
 	display: none;
 	height: 100%;
 	position: absolute;
@@ -189,25 +203,26 @@ div.hearthot {
 	width: 100%
 }
 #fenghao{
-	height: 68px;
-	margin-top: 90px;
+	height: 71px;
+    width: 142px;
+    margin: 50px auto 25px;
 }
 #scorecontent{
 	font-size: 16px;
 	font-weight: 700;
-	color: #FFF;
+	color: #000;
 	text-align: center;
-	line-height: 1.8em;
-	margin-top: 5px;
 }
 .lighttext{
-	color: #F6DE0A;
+	color: #df0000;
 }
 .geili{
 	background: url(../img/geili.png) center no-repeat;
+	background-size:100% 100%;
 }
 .yinhen{
 	background: url(../img/yinhen.png) center no-repeat;
+	background-size:100% 100%;
 }
 .textc{
 	text-align: center;
@@ -219,15 +234,25 @@ div.hearthot {
 	line-height: 54px;
 	color: #FFF;
 	font-size: 20px;
-	border-radius: 5px;
+	border-radius: 20px;
 	text-align: center;
 }
 .btn1{
-	margin-top: 22px;
-	background-color: #E8722C;
+	margin-top: 15px;
+	background-color: #02a299;
 }
 .btn2{
 	margin-top: 12px;
-	border: 1px solid #6A6B6D;
+	border: 1px solid #02a299;
 
+}
+.bottom-icon{
+	width:95.6%;
+	height:auto;
+	position:absolute;
+	left:2.2%;
+	bottom:0;
+}
+.displayno{
+	display:none;
 }

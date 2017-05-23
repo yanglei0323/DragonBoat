@@ -4,9 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="initial-scale=1, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0, width=device-width">
 	<meta name="screen-orientation" content="portrait">
-    <title>进击的玉兔</title>
+    <title>全民“粽”动员，欢天喜地吃粽子！</title>
     <link rel="stylesheet" type="text/css" href="static/css/index.css">
-    <script src="http://s0.qhimg.com/!249ce048/WeixinApi.js" type="text/javascript" charset="utf-8"></script>
     <script src="static/js/zepto.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 </head>
@@ -18,6 +17,10 @@
             <div class="heart"></div>
             <span id="score">0</span>
         </div>
+        <!-- 音乐(默认为自动循环播放) -->
+        <div class="music play">
+            <audio id="audio" loop='loop' autoplay='autoplay' src="static/css/xcyy.mp3"></audio>
+        </div>
 		<canvas id="stage"></canvas>
 	</div>
 	<div id="gameoverPanel"></div>
@@ -26,11 +29,12 @@
         <a href="javascript:void(0)" class="replay"></a>
         <div id="fenghao"></div>
         <div id="scorecontent">
-        	您在<span id="stime" class="lighttext">2378</span>秒内抢到了<span id="sscore" class="lighttext">21341</span>个月饼<br>超过了<span id="suser" class="lighttext">31%</span>的用户！
+        	您在<span id="stime" class="lighttext">2378</span>秒内吃到了<span id="sscore" class="lighttext">21341</span>个粽子<br>超过了<span id="suser" class="lighttext">31%</span>的用户！
         </div>
         <div class="textc">
-        	<span class="btn1 share">请小伙伴吃月饼</span>
+        	<span class="btn1 share">请小伙伴吃粽子</span>
         </div>
+        <img src="static/img/yinhen_icon.png" alt="resultIcon" class="bottom-icon">
 	</div>
 </div>
 
